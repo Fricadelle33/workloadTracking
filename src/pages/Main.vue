@@ -3,9 +3,9 @@
     <h3>Hello, world !</h3>
     <div class="q-pa-md q-gutter-sm">
       <q-banner rounded class="bg-indigo-8 text-white">
-
-        What would you like to do, Stranger ?<br/>
-        <input type="text" v-model="strangerDesire" />
+        <label>What would you like to do, Stranger ?<br/>
+          <input type="text" v-model="strangerDesire" />
+        </label>
 
         <template v-slot:action>
           <q-btn color="black" :loading="isSwordLoading" :label=swordLabel @click="simulateProgress()">
@@ -15,7 +15,9 @@
           <q-btn v-else v-show="isLightAvailable" color="green" :label=torchLabel :ripple="{ color: 'yellow' }" @click="fulfillDreams()"/>
         </template>
       </q-banner>
-      <div v-if="isLightOn"><h6>{{ strangerDesire }} has been fulfilled.</h6></div>
+      <q-banner rounded class="text-white" v-if="isLightOn" :class="cls">
+        {{ strangerDesire }} has been fulfilled.
+      </q-banner>
       <q-toggle
         :label="`God mode: ${godModeToggle}`"
         v-model="godModeToggle"
@@ -23,7 +25,6 @@
         true-value="On"
       /><br/>
       <q-btn
-        key="btn_size_round_md"
         round
         color="primary"
         size="md"
@@ -35,6 +36,7 @@
 
 <script>
 export default {
+  name: 'AventureDontVousEtesLeHeros',
   data () {
     return {
       swordOn: 'Unsheathe !',
@@ -45,7 +47,8 @@ export default {
       isLightAvailable: false,
       isSwordLoading: false,
       isLightOn: false,
-      strangerDesire: ''
+      strangerDesire: '',
+      cls: 'bg-indigo-8'
     }
   },
   created () {
@@ -74,6 +77,7 @@ export default {
     fulfillDreams: function () {
       if (this.strangerDesire === '') {
         this.strangerDesire = 'Nothing'
+        this.cls = 'bg-red-8'
       }
       this.isLightOn = true
     },
@@ -86,6 +90,14 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.successClass {
+  background-color: var(bg);
+  color: var(primary);
+}
 
+.errorClass {
+  background-color: var(bg);
+  color: red;
+}
 </style>
